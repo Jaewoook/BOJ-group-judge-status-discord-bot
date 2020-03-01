@@ -1,0 +1,15 @@
+{
+  "name": "boj-group-status-discord-bot",
+  "version": "1.0.0",
+  "description": "Baekjoon Online Judge group status reporting discord bot",
+  "scripts": {
+      "build": "rm dist && tsc"
+  },
+  "main": "index.js",
+  "author": "Jaewook Ahn",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "typescript": "^3.8.3"
+  }
+}

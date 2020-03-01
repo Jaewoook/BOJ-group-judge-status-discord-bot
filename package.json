@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Baekjoon Online Judge group status reporting discord bot",
   "scripts": {
-      "build": "rm dist && tsc"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "main": "index.js",
   "author": "Jaewook Ahn",
@@ -11,5 +12,8 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "discord.js": "^11.6.1"
   }
 }

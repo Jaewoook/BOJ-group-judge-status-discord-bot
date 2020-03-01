@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  prepare:
+    working_directory: ~/app
+    docker:
+      - image: node:11
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run: |
+          npm i -g yarn
+          yarn
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/app
+          paths:
+            - node_modules
+  build:
+    working_directory: ~/app
+    docker:
+      - image: node:11
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run: yarn build
+workflows:
+  version: 2
+  main:
+    jobs:
+      - prepare:
+          filters:
+            tags:
+              only: /.*/
+      - build:
+          requires:
+            - prepare
+          filters:
+            tags:
+              only: /.*/

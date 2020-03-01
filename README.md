@@ -1,1 +1,1 @@
-#BOJ Group Status Discord Bot
+# BOJ Group Status Discord Bot

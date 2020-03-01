@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "skipLibCheck": true,
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "noUnusedLocals": true,
+        "strict": false,
+        "target": "ESNext",
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "outDir": "dist"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

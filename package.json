@@ -4,7 +4,8 @@
   "description": "Baekjoon Online Judge group status reporting discord bot",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint": "eslint -c .eslintrc.json src/**"
   },
   "main": "index.js",
   "author": "Jaewook Ahn",
@@ -13,11 +14,14 @@
     "@types/cheerio": "^0.22.16",
     "@types/request": "^2.48.4",
     "@types/request-promise": "^4.1.45",
+    "@typescript-eslint/eslint-plugin": "^2.22.0",
+    "@typescript-eslint/parser": "^2.22.0",
     "eslint": "^6.8.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "date-fns": "^2.10.0",
     "discord.js": "^12.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"

@@ -58,7 +58,7 @@ class StatusParser {
                 });
                 result.push(data);
             });
-            console.log("parse result: ", result.length);
+            console.log("parse result: ", JSON.stringify(result));
 
             if (result.length !== 0) {
                 return this.validateData(result) > 0 ? result : [];

@@ -32,10 +32,19 @@ client.on("ready", async () => {
             .setTimestamp()
         );
     });
+
     console.log("computed result\n", result);
-    queue.forEach(async (message) => {
+    if (!result.length) {
+        process.exit(0);
+    }
+
+    queue.forEach(async (message, i) => {
         await channel.send(message);
         console.log("message sent!");
+
+        if (i === queue.length - 1) {
+            process.exit(0);
+        }
     });
 });
 

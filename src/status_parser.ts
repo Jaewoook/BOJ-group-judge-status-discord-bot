@@ -9,7 +9,7 @@ const DEFAULT_IDS = [
     "rnsdls0823",
 ];
 
-interface StatusData {
+export interface StatusData {
     id?: string;
     user_id?: string;
     problem?: {

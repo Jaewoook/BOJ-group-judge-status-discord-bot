@@ -7,6 +7,9 @@ const DEFAULT_IDS = [
     "jjh63360",
     "soo7652",
     "rnsdls0823",
+    "taim1101",
+    "98lim51",
+    "leey0818",
 ];
 
 export interface StatusData {
@@ -67,7 +70,7 @@ class StatusParser {
             });
             console.log("parse result: ", JSON.stringify(result));
 
-            if (result.length !== 0) {
+            if (result.length > 0) {
                 return this.validateData(result) > 0 ? result : [];
             } else {
                 return [];

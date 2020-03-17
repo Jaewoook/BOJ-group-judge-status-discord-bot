@@ -26,11 +26,18 @@ class StatusParser {
         try {
             const res = await request("https://www.acmicpc.net/status?group_id=7101", {
                 headers: {
-                    cookie: auth.cookie || "OnlineJudge=smsgmds0esh52l206p7r5fkh0q",
+                    cookie: auth.cookie || "OnlineJudge=tin7nd4r64p79emrimcsrkqhto",
                 },
             });
             // console.log("result\n\n", res);
             const $ = cheerio.load(res);
+
+            //  check session is valid
+            if ($(".page-header").length == 0) {
+                console.log("session expired");
+                return [];
+            }
+
             const result: StatusData[] = [];
             $("#status-table > tbody > tr").each((idx, row) => {
                 const data: StatusData = {};

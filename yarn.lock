@@ -33,10 +33,10 @@
   resolved "https://registry.yarnpkg.com/@types/caseless/-/caseless-0.12.2.tgz#f65d3d6389e01eeb458bd54dc8f52b95a9463bc8"
   integrity sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==
 
-"@types/cheerio@^0.22.16":
-  version "0.22.16"
-  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.16.tgz#c748a97b8a6f781b04bbda4a552e11b35bcc77e4"
-  integrity sha512-bSbnU/D4yzFdzLpp3+rcDj0aQQMIRUBNJU7azPxdqMpnexjUSvGJyDuOBQBHeOZh1mMKgsJm6Dy+LLh80Ew4tQ==
+"@types/cheerio@^0.22.20":
+  version "0.22.20"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.20.tgz#612946700537fecc582e075cc6684befbaf881e6"
+  integrity sha512-Eig25TFYoZbPw9lWGD52oHYdlxTN09a4H36689k/4Sn6t6vGWiT4Jh3at00CBVEct4cDK3huVxaPT1MFvJ8lGQ==
   dependencies:
     "@types/node" "*"
 

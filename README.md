@@ -4,6 +4,11 @@
 
 This is a API handler performs **Baekjoon Online Judge** group status parse and notify to discord channel.
 
+## Features
+
+- API handler
+- CLI command (future)
+
 ## API
 
 ```

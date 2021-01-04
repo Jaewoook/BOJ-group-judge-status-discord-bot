@@ -4,17 +4,16 @@
 import { Client, MessageEmbed, TextChannel } from "discord.js";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { EventEmitter } from "events";
 
 /**
  * Internal dependencies
  */
-import { StatusData } from "./status_parser";
+import { StatusData } from "./status-parser";
 import { log } from "./utils";
 
 const getUrl = (groupCode: string) => `https://www.acmicpc.net/status?group_id=${groupCode}`;
 
-export class Reporter extends EventEmitter {
+export class Reporter {
 
     client: Client;
     token: string;
@@ -22,24 +21,27 @@ export class Reporter extends EventEmitter {
     channelId: string;
 
     constructor(token: string, guildId: string, channelId: string) {
-        super();
         this.token = token;
         this.guildId = guildId;
         this.channelId = channelId;
         this.client = new Client();
-        this.client.on("ready", this.handleClicentReady);
-    }
-
-    async handleClicentReady() {
-        this.emit("onLoginSuccess");
-        this.client.user.setActivity("채점 기록 확인");
     }
 
     login() {
         if (!this.token) {
             throw new Error("No Access Token provided");
         }
-        this.client.login(this.token);
+        return new Promise<void>((resolve) => {
+            this.client.once("ready", this.handleClicentReady(resolve));
+            this.client.login(this.token);
+        });
+    }
+
+    handleClicentReady(resolve: () => void) {
+        return () => {
+            this.client.user.setActivity("채점 기록 확인");
+            resolve();
+        };
     }
 
     generateReportMessage(data: StatusData, groupCode: string) {

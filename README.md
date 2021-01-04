@@ -19,10 +19,11 @@ GET /api/group-status
 
 | name | description | required |
 |---|---|:---:|
-| token | BOJ token (cookie name: OnlineJudge) | Y |
+| boj_token | BOJ token (cookie name: OnlineJudge) | Y |
 | boj_group_code | BOJ Group ID | Y |
-| discord_guild_id | Discord Server ID | N |
-| discord_channel_id | Discord channel ID | N |
+| discord_token | Discord access token | Y |
+| discord_guild_id | Discord Server ID | Y |
+| discord_channel_id | Discord channel ID | Y |
 
 ## Author
 

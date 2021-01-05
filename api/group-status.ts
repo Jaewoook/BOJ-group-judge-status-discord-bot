@@ -13,7 +13,7 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
         }
         res.json({
             status: "OK",
-            judgeStatus: status,
+            judgeStatus: result,
             notified: !!discord_webhook_url,
         });
     } catch (err) {
@@ -21,6 +21,7 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
             status: "error",
             error: err,
         });
+        console.error(err);
     }
 };
 

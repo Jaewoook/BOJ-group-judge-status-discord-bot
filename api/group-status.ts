@@ -1,24 +1,26 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { Reporter } from "../reporter";
-import { StatusData, StatusParser } from "../status-parser";
+import { StatusParser } from "../status-parser";
 
 const handler = async (req: NowRequest, res: NowResponse) =>{
-    const { discord_token, boj_token, boj_group_code, discord_guild_id, discord_channel_id } = req.query;
-    const reporter = new Reporter(discord_token as string, discord_guild_id as string, discord_channel_id as string);
+    const { boj_token, boj_group_code, discord_webhook_url } = req.query;
+    const reporter = new Reporter();
     const statusParser = new StatusParser(boj_token as string);
     try {
-        const result = await Promise.all<StatusData[], void>([
-            statusParser.parse(Number.parseInt(boj_group_code as string)),
-            reporter.login()
-        ]);
-        await reporter.notify(result[0], boj_group_code as string);
-        res.json(result[0]);
+        const result = await statusParser.parse(Number.parseInt(boj_group_code as string));
+        if (discord_webhook_url) {
+            await reporter.notify(discord_webhook_url as string, result, boj_group_code as string);
+        }
+        res.json({
+            status: "OK",
+            judgeStatus: status,
+            notified: !!discord_webhook_url,
+        });
     } catch (err) {
         res.status(500).json({
             status: "error",
             error: err,
         });
-        throw err;
     }
 };
 

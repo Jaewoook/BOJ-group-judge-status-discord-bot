@@ -57,26 +57,36 @@ export class Reporter {
     }
 
     async notify(statusData: StatusData[], groupCode: string) {
-        //  fetch target information
-        const guild = await this.client.guilds.resolve(this.guildId).fetch();
-        const channel = guild.channels.resolve(this.channelId) as TextChannel;
-        const msg = await channel.messages.fetch({ limit: 1 });
-        const latestTimestamp = new Date (msg.map((m) => m.embeds[0])[0].timestamp).getTime();
+        try {
+            //  fetch target information
+            const guild = await this.client.guilds.resolve(this.guildId).fetch();
+            const channel = guild.channels.resolve(this.channelId) as TextChannel;
+            const msg = await channel.messages.fetch({ limit: 1 });
+            const latestTimestamp = new Date (msg.map((m) => m.embeds[0])[0].timestamp).getTime();
 
-        statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
-        if (!statusData.length) {
-            //  TODO throw error
-            log.error("No status data to send");
-            return;
+            statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
+            if (!statusData.length) {
+                //  TODO throw error
+                log.error("No status data to send");
+                return;
+            }
+            log.verbose("status data\n", statusData);
+
+            const queue = statusData.reverse().map((row) => this.generateReportMessage(row, groupCode));
+            log.verbose(queue);
+            await Promise.all(queue.map(async (message) => {
+                return channel.send(message);
+            }));
+            log.verbose("message sent!");
+        } finally {
+            this.cleanup();
         }
-        log.verbose("status data\n", statusData);
+    }
 
-        const queue = statusData.reverse().map((row) => this.generateReportMessage(row, groupCode));
-        log.verbose(queue);
-        await Promise.all(queue.map(async (message) => {
-            return channel.send(message);
-        }));
-        log.verbose("message sent!");
+    cleanup() {
+        if (this.client) {
+            this.client.destroy();
+        }
     }
 
 }

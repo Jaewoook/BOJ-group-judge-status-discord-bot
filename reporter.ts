@@ -72,10 +72,11 @@ export class Reporter {
         log.verbose("status data\n", statusData);
 
         const queue = statusData.reverse().map((row) => this.generateReportMessage(row, groupCode));
-        queue.forEach(async (message) => {
-            await channel.send(message);
-            log.verbose("message sent!");
-        });
+        log.verbose(queue);
+        await Promise.all(queue.map(async (message) => {
+            return channel.send(message);
+        }));
+        log.verbose("message sent!");
     }
 
 }

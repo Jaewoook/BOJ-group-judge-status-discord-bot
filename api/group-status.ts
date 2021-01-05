@@ -18,7 +18,6 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
             status: "error",
             error: err,
         });
-        throw err;
     }
 };
 

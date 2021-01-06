@@ -49,14 +49,12 @@ jobs:
     steps:
       - name: Update group judge status
         run: |
-          curl --request POST \
-          --url 'https://boj-group-judge-status-discord-bot.vercel.app/api/status?boj_token=$BOJ_TOKEN&boj_group_code=$BOJ_GROUP_CODE&discord_token=$DISCORD_TOKEN&discord_guild_id=$DISCORD_GUILD_ID&discord_channel_id=$DISCORD_CHANNEL_ID'
-        env:
-          BOJ_TOKEN: ${{ secrets.BOJ_TOKEN }}
-          BOJ_GROUP_CODE: ${{ secrets.BOJ_GROUP_CODE }}
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          DISCORD_GUILD_ID: ${{ secrets.DISCORD_GUILD_ID }}
-          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          curl -G -L https://boj-group-judge-status-discord-bot.vercel.app/api/status \
+          -d 'boj_token=${{ secrets.BOJ_TOKEN }}' \
+          -d 'boj_group_code=${{ secrets.BOJ_GROUP_CODE }}' \
+          -d 'discord_token=${{ secrets.DISCORD_TOKEN }}' \
+          -d 'discord_guild_id=${{ secrets.DISCORD_GUILD_ID }}' \
+          -d 'discord_channel_id=${{ secrets.DISCORD_CHANNEL_ID }}'
 ```
 
 ## API

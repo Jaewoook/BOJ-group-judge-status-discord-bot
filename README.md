@@ -22,7 +22,7 @@ Simply use deployed Vercel function is the easiest way. It is deployed when this
 
 #### Step 1. Deploy to your Vercel
 
-You can customize API behavior and others by modifying and deploying function to your Vercel server. Click on the Deploy button to start.
+You can customize API behavior and others by modifying and deploying function to your Vercel server. Click on the **Deploy button** to start.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FJaewoook%2FBOJ-group-judge-status-discord-bot)
 
@@ -72,6 +72,34 @@ ANY /api/status
 | discord_token | Discord access token | Y |
 | discord_guild_id | Discord Server ID | Y |
 | discord_channel_id | Discord channel ID | Y |
+
+### Response
+
+```ts
+HTTP 200 OK
+
+[
+    {
+        "id": string,
+        "user_id": string,
+        "problem": {
+            "num": string,
+            "name": string,
+        };
+        "result": string,
+        "timestamp": number,
+    },
+]
+```
+
+```ts
+HTTP 500 Internal Server Error
+
+{
+    "status": "error",
+    "error": object,
+}
+```
 
 ## Run on your local machine
 

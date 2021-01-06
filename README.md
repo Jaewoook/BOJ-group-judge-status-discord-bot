@@ -10,9 +10,9 @@ Before using Discord notify feature, you have to create your own Discord Bot wit
 
 ## Usage
 
-There are two methods to use API. You can follow one of these following methods.
+There are two methods to use this function. You can choose one of these methods to get started.
 
-### Method 1. Use deployed vercel function
+### Method 1. Use deployed Vercel function
 
 Simply use deployed Vercel function is the easiest way. It is deployed when this repository is updated. You can use latest version of this API without any manual update.
 
@@ -20,19 +20,19 @@ Simply use deployed Vercel function is the easiest way. It is deployed when this
 
 ### Method 2. Manual Configuration
 
-#### Deploy to your Vercel
+#### Step 1. Deploy to your Vercel
 
-You can customize API behavior and others by deploying this to your Vercel server. Click on the Deploy button to start.
+You can customize API behavior and others by modifying and deploying function to your Vercel server. Click on the Deploy button to start.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FJaewoook%2FBOJ-group-judge-status-discord-bot)
 
-### Setup the cron job for continous update
+### Step 2. Setup the cron job for continous update
 
-By defaukt, This function will quit after response. So, you need setup for continous status update using cron job.
+By default, This function will quit after response. So, you need setup for continous status update using cron job.
 
 Thankfully, GitHub Actions provides scheduled workflow. Here is example GitHub Actions config.
 
-> NOTE: You need to set repository secrets to get sensetive information.
+> NOTE: You need to set repository secrets to protect sensetive information.
 
 ```yaml
 name: Update group judge status
@@ -50,7 +50,7 @@ jobs:
       - name: Update group judge status
         run: |
           curl --request POST \
-          --url 'https://boj-group-judge-status-discord-bot.vercel.app/api/status?boj_token=$BOJ_TOKEN&boj_group_code=$BOJ_GROUP_CODE&discord_token=$DISCORD_TOKEN&discord_guild_id=$DISCORD_GUILD_ID&discord_channel_id=$DISCORD_CHANNEL_IDt'
+          --url 'https://boj-group-judge-status-discord-bot.vercel.app/api/status?boj_token=$BOJ_TOKEN&boj_group_code=$BOJ_GROUP_CODE&discord_token=$DISCORD_TOKEN&discord_guild_id=$DISCORD_GUILD_ID&discord_channel_id=$DISCORD_CHANNEL_ID'
         env:
           BOJ_TOKEN: ${{ secrets.BOJ_TOKEN }}
           BOJ_GROUP_CODE: ${{ secrets.BOJ_GROUP_CODE }}
@@ -62,7 +62,7 @@ jobs:
 ## API
 
 ```
-ANY /api/group-status
+ANY /api/status
 ```
 
 ### Query parameter

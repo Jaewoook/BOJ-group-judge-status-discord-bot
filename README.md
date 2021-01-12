@@ -70,7 +70,6 @@ ANY /api/status
 | boj_token | BOJ token (cookie name: OnlineJudge) | Y |
 | boj_group_code | BOJ Group ID | Y |
 | discord_token | Discord access token | Y |
-| discord_guild_id | Discord Server ID | Y |
 | discord_channel_id | Discord channel ID | Y |
 
 ### Response
@@ -78,17 +77,34 @@ ANY /api/status
 ```ts
 HTTP 200 OK
 
-[
-    {
-        "id": string,
-        "user_id": string,
-        "problem": {
-            "num": string,
-            "name": string,
-        };
-        "result": string,
-        "timestamp": number,
-    },
+{
+    "status": "OK",
+    "data": {
+        "originals": [
+            {
+                "id": string,
+                "user_id": string,
+                "problem": {
+                    "num": string,
+                    "name": string,
+                };
+                "result": string,
+                "timestamp": number,
+            },
+        ],
+        "sent": [
+            {
+                "id": string,
+                "user_id": string,
+                "problem": {
+                    "num": string,
+                    "name": string,
+                };
+                "result": string,
+                "timestamp": number,
+            },
+        ]
+    }
 ]
 ```
 
@@ -97,7 +113,7 @@ HTTP 500 Internal Server Error
 
 {
     "status": "error",
-    "error": object,
+    "error": "error reason",
 }
 ```
 

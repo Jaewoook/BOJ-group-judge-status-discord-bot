@@ -4,7 +4,7 @@
   "description": "Baekjoon Online Judge group status reporting discord bot",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/reporter.js",
+    "start": "NODE_ENV=localhost vercel dev",
     "lint": "eslint -c .eslintrc.json src/**"
   },
   "main": "index.js",
@@ -19,11 +19,15 @@
     "@typescript-eslint/parser": "^2.22.0",
     "@vercel/node": "^1.8.5",
     "eslint": "^6.8.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "vercel": "^21.0.1"
   },
   "dependencies": {
+    "@types/config": "^0.0.38",
     "cheerio": "^1.0.0-rc.3",
+    "config": "^3.3.3",
     "date-fns": "^2.10.0",
+    "date-fns-tz": "^1.0.12",
     "discord.js": "^12.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"

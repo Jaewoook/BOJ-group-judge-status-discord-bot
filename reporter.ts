@@ -25,12 +25,10 @@ export class Reporter {
 
     client: Client;
     token: string;
-    guildId: string;
     channelId: string;
 
-    constructor(token: string, guildId: string, channelId: string) {
+    constructor(token: string, channelId: string) {
         this.token = token;
-        this.guildId = guildId;
         this.channelId = channelId;
         this.client = new Client();
     }

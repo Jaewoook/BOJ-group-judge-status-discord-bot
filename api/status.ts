@@ -11,13 +11,14 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
             statusParser.parse(Number.parseInt(boj_group_code as string)),
             reporter.login()
         ]);
-        await reporter.notify(result[0], boj_group_code as string);
+        await reporter.notify(result[0]);
         res.json(result[0]);
     } catch (err) {
         res.status(500).json({
             status: "error",
             error: err,
         });
+        throw err;
     }
 };
 

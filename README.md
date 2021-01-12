@@ -53,7 +53,6 @@ jobs:
           -d 'boj_token=${{ secrets.BOJ_TOKEN }}' \
           -d 'boj_group_code=${{ secrets.BOJ_GROUP_CODE }}' \
           -d 'discord_token=${{ secrets.DISCORD_TOKEN }}' \
-          -d 'discord_guild_id=${{ secrets.DISCORD_GUILD_ID }}' \
           -d 'discord_channel_id=${{ secrets.DISCORD_CHANNEL_ID }}'
 ```
 
@@ -128,7 +127,8 @@ yarn global add vercel
 # move to project's root directory
 cd BOJ-group-judge-status-discord-bot
 
-vercel dev
+# Start vercel dev server with localhost mode
+yarn start
 ```
 
 ## Author

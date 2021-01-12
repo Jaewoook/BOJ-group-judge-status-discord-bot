@@ -33,7 +33,8 @@ export class StatusParser {
                 const $ = cheerio.load(response);
                 //  check session is valid
                 if ($(".page-header").length === 0 || $(".loginbar .username").length === 0) {
-                    reject(new Error("Invalid token"));
+                    reject("Invalid token");
+                    return;
                 }
 
                 const result: StatusData[] = [];
@@ -65,7 +66,7 @@ export class StatusParser {
                         }
                     });
                     if (this.validate(data)) {
-                        reject(new Error("Status data validation failed"));
+                        reject("Status data validation failed");
                         return;
                     }
                     result.push(data);
@@ -75,7 +76,7 @@ export class StatusParser {
                 }
 
                 if (this.hasProcessing(result)) {
-                    reject(new Error("Processing submit exists. Try next time."));
+                    reject("Processing submit exists. Try next time.");
                 }
                 resolve(result);
             }).catch((err) => reject(err));

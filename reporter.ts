@@ -65,34 +65,33 @@ export class Reporter {
     }
 
     async notify(statusData: StatusData[]) {
-        try {
+        return new Promise<StatusData[]>((resolve, reject) => {
             //  fetch target information
-            const guild = await this.client.guilds.resolve(this.guildId).fetch();
-            const channel = guild.channels.resolve(this.channelId) as TextChannel;
-            const msg = await channel.messages.fetch({ limit: 1 });
-            const latestTimestamp = parse(
-                                        msg.map((m) => m.embeds[0])[0].fields.find((f) => MSG_FIELD_LABEL_TIMESTAMP.startsWith(f.name)).value,
-                                        TIMESTAMP_FORMAT,
-                                        new Date(),
-                                    ).getTime() + 1000 * 59;
-            statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
-            if (!statusData.length) {
-                //  TODO throw error
-                log.error("No status data to send");
-                return;
-            }
-            if (isLocalhost()) {
-                log.verbose("filtered data:", statusData);
-            }
-
-            const queue = statusData.reverse().map((row) => this.generateReportMessage(row));
-            await Promise.all(queue.map(async (message) => {
-                return channel.send(message);
-            }));
-            log.verbose("message sent!");
-        } finally {
-            this.cleanup();
-        }
+            const channel = this.client.channels.resolve(this.channelId) as TextChannel;
+            channel.messages.fetch({ limit: 1 }).then((msg) => {
+                const latestTimestamp = parse(
+                                            msg.map((m) => m.embeds[0])[0].fields.find((f) => MSG_FIELD_LABEL_TIMESTAMP.startsWith(f.name)).value,
+                                            TIMESTAMP_FORMAT,
+                                            new Date(),
+                                        ).getTime() + 1000 * 59;
+                statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
+                if (!statusData.length) {
+                    //  TODO throw error
+                    log.error("No status data to send");
+                    resolve([]);
+                    return;
+                }
+                if (isLocalhost()) {
+                    log.verbose("filtered data:", statusData);
+                }
+                const queue = statusData.reverse().map((row) => this.generateReportMessage(row));
+                return Promise.all([Promise.all(queue.map((message) => channel.send(message))), statusData]);
+            }).then((result) => {
+                log.verbose("message sent!");
+                resolve(result[1]);
+            }).catch((err) => reject(err))
+            .finally(() => this.cleanup());
+        });
     }
 
     cleanup() {

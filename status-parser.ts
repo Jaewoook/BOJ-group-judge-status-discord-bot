@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import request from "request-promise";
-import { log } from "./utils";
+import { log, isLocalhost } from "./utils";
 
 export interface StatusData {
     id?: string;
@@ -55,6 +55,9 @@ export class StatusParser {
                                 break;
                             case 3:
                                 data.result = $(".result-text > span", col).text();
+                                if (!data.result) {
+                                    data.result = $(".result-text > a > span", col).text();
+                                }
                                 break;
                             case 8:
                                 data.timestamp = $(col).children().data("timestamp") * 1000;
@@ -67,7 +70,9 @@ export class StatusParser {
                     }
                     result.push(data);
                 });
-                log.verbose("parse result:", JSON.stringify(result, null, 2));
+                if (isLocalhost()) {
+                    log.verbose("parse result:", JSON.stringify(result, null, 2));
+                }
 
                 if (this.hasProcessing(result)) {
                     reject(new Error("Processing submit exists. Try next time."));

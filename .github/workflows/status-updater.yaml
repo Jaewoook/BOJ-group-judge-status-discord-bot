@@ -3,7 +3,7 @@ name: Update group judge status
 on:
   workflow_dispatch:
   schedule:
-  - cron: '*/3 * * * *'
+  - cron: '*/10 * * * *'
 
 jobs:
   update:
@@ -15,5 +15,4 @@ jobs:
           -d 'boj_token=${{ secrets.BOJ_TOKEN }}' \
           -d 'boj_group_code=${{ secrets.BOJ_GROUP_CODE }}' \
           -d 'discord_token=${{ secrets.DISCORD_TOKEN }}' \
-          -d 'discord_guild_id=${{ secrets.DISCORD_GUILD_ID }}' \
           -d 'discord_channel_id=${{ secrets.DISCORD_CHANNEL_ID }}'

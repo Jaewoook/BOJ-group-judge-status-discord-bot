@@ -2,16 +2,24 @@
  * External dependencies
  */
 import { Client, MessageEmbed, TextChannel } from "discord.js";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { format } from "date-fns-tz";
+import { parse } from "date-fns";
 
 /**
  * Internal dependencies
  */
 import { StatusData } from "./status-parser";
-import { log } from "./utils";
+import { isLocalhost, log } from "./utils";
 
-const getUrl = (groupCode: string) => `https://www.acmicpc.net/status?group_id=${groupCode}`;
+const MSG_FIELD_LABEL_USER_ID = "👤 아이디 ";
+const MSG_FIELD_LABEL_PROBLEM_NUM = "🔢 문제 번호 ";
+const MSG_FIELD_LABEL_PROBLEM_NAME = "📝 문제 이름 ";
+const MSG_FIELD_LABEL_RESULT = "✅ 결과 ";
+const MSG_FIELD_LABEL_TIMESTAMP = "🕐 채점 시간 ";
+const MSG_FIELD_LABEL_URL = "🔗 문제 URL ";
+const TIMESTAMP_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
+
+const getUrl = (problemNum: string) => `https://www.acmicpc.net/problem/${problemNum}`;
 
 export class Reporter {
 
@@ -44,36 +52,40 @@ export class Reporter {
         };
     }
 
-    generateReportMessage(data: StatusData, groupCode: string) {
+    generateReportMessage(data: StatusData) {
         return new MessageEmbed()
             .setColor(0x0099ff)
-            .setURL(getUrl(getUrl(groupCode)))
-            .addField("👤아이디 ", data.user_id)
-            .addField("🔢 문제 번호 ", data.problem.num, true)
-            .addField("📝 문제 이름 ", data.problem.name, true)
-            .addField("✅ 결과 ", data.result)
-            .addField("🕐 채점 시간", format(data.timestamp, "HH시 mm분", { locale: ko }))
+            .addField(MSG_FIELD_LABEL_USER_ID, data.user_id, true)
+            .addField(MSG_FIELD_LABEL_PROBLEM_NUM, data.problem.num, true)
+            .addField(MSG_FIELD_LABEL_PROBLEM_NAME, data.problem.name, true)
+            .addField(MSG_FIELD_LABEL_RESULT, data.result, true)
+            .addField(MSG_FIELD_LABEL_TIMESTAMP, format(data.timestamp, TIMESTAMP_FORMAT, { timeZone: "Asia/Seoul" }), true)
+            .addField(MSG_FIELD_LABEL_URL, getUrl(data.problem.num))
             .setTimestamp();
     }
 
-    async notify(statusData: StatusData[], groupCode: string) {
+    async notify(statusData: StatusData[]) {
         try {
             //  fetch target information
             const guild = await this.client.guilds.resolve(this.guildId).fetch();
             const channel = guild.channels.resolve(this.channelId) as TextChannel;
             const msg = await channel.messages.fetch({ limit: 1 });
-            const latestTimestamp = new Date (msg.map((m) => m.embeds[0])[0].timestamp).getTime();
-
+            const latestTimestamp = parse(
+                                        msg.map((m) => m.embeds[0])[0].fields.find((f) => MSG_FIELD_LABEL_TIMESTAMP.startsWith(f.name)).value,
+                                        TIMESTAMP_FORMAT,
+                                        new Date(),
+                                    ).getTime() + 1000 * 59;
             statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
             if (!statusData.length) {
                 //  TODO throw error
                 log.error("No status data to send");
                 return;
             }
-            log.verbose("status data\n", statusData);
+            if (isLocalhost()) {
+                log.verbose("filtered data:", statusData);
+            }
 
-            const queue = statusData.reverse().map((row) => this.generateReportMessage(row, groupCode));
-            log.verbose(queue);
+            const queue = statusData.reverse().map((row) => this.generateReportMessage(row));
             await Promise.all(queue.map(async (message) => {
                 return channel.send(message);
             }));

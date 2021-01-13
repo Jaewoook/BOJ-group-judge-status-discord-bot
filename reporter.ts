@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { Client, MessageEmbed, TextChannel } from "discord.js";
-import { format } from "date-fns-tz";
-import { parse } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
+import { format, parse } from "date-fns";
 
 /**
  * Internal dependencies
@@ -51,13 +51,17 @@ export class Reporter {
     }
 
     generateReportMessage(data: StatusData) {
+        let time = new Date(data.timestamp);
+        if (time.getTimezoneOffset() === 0) {
+            time = utcToZonedTime(time, "Asia/Seoul");
+        }
         return new MessageEmbed()
             .setColor(0x0099ff)
             .addField(MSG_FIELD_LABEL_USER_ID, data.user_id, true)
             .addField(MSG_FIELD_LABEL_PROBLEM_NUM, data.problem.num, true)
             .addField(MSG_FIELD_LABEL_PROBLEM_NAME, data.problem.name, true)
             .addField(MSG_FIELD_LABEL_RESULT, data.result, true)
-            .addField(MSG_FIELD_LABEL_TIMESTAMP, format(data.timestamp, TIMESTAMP_FORMAT, { timeZone: "Asia/Seoul" }), true)
+            .addField(MSG_FIELD_LABEL_TIMESTAMP, format(data.timestamp, TIMESTAMP_FORMAT), true)
             .addField(MSG_FIELD_LABEL_URL, getUrl(data.problem.num))
             .setTimestamp();
     }

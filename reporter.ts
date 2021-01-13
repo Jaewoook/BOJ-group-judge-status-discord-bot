@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { Client, MessageEmbed, TextChannel } from "discord.js";
-import { utcToZonedTime } from "date-fns-tz";
-import { format, parse } from "date-fns";
 
 /**
  * Internal dependencies
@@ -15,9 +13,7 @@ const MSG_FIELD_LABEL_USER_ID = "👤 아이디 ";
 const MSG_FIELD_LABEL_PROBLEM_NUM = "🔢 문제 번호 ";
 const MSG_FIELD_LABEL_PROBLEM_NAME = "📝 문제 이름 ";
 const MSG_FIELD_LABEL_RESULT = "✅ 결과 ";
-const MSG_FIELD_LABEL_TIMESTAMP = "🕐 채점 시간 ";
 const MSG_FIELD_LABEL_URL = "🔗 문제 URL ";
-const TIMESTAMP_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
 const getUrl = (problemNum: string) => `https://www.acmicpc.net/problem/${problemNum}`;
 
@@ -51,19 +47,14 @@ export class Reporter {
     }
 
     generateReportMessage(data: StatusData) {
-        let time = new Date(data.timestamp);
-        if (time.getTimezoneOffset() === 0) {
-            time = utcToZonedTime(time, "Asia/Seoul");
-        }
         return new MessageEmbed()
             .setColor(0x0099ff)
             .addField(MSG_FIELD_LABEL_USER_ID, data.user_id, true)
             .addField(MSG_FIELD_LABEL_PROBLEM_NUM, data.problem.num, true)
             .addField(MSG_FIELD_LABEL_PROBLEM_NAME, data.problem.name, true)
             .addField(MSG_FIELD_LABEL_RESULT, data.result, true)
-            .addField(MSG_FIELD_LABEL_TIMESTAMP, format(data.timestamp, TIMESTAMP_FORMAT), true)
             .addField(MSG_FIELD_LABEL_URL, getUrl(data.problem.num))
-            .setTimestamp();
+            .setTimestamp(data.timestamp);
     }
 
     async notify(statusData: StatusData[]) {
@@ -71,11 +62,7 @@ export class Reporter {
             //  fetch target information
             const channel = this.client.channels.resolve(this.channelId) as TextChannel;
             channel.messages.fetch({ limit: 1 }).then((msg) => {
-                const latestTimestamp = parse(
-                                            msg.map((m) => m.embeds[0])[0].fields.find((f) => MSG_FIELD_LABEL_TIMESTAMP.startsWith(f.name)).value,
-                                            TIMESTAMP_FORMAT,
-                                            new Date(),
-                                        ).getTime() + 1000 * 59;
+                const latestTimestamp = msg.map((m) => m.embeds[0])[0].timestamp;
                 statusData = statusData.filter((row) => row.timestamp > latestTimestamp);
                 if (!statusData.length) {
                     //  TODO throw error

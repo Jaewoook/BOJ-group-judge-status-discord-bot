@@ -23,11 +23,7 @@
     "vercel": "^21.0.1"
   },
   "dependencies": {
-    "@types/config": "^0.0.38",
     "cheerio": "^1.0.0-rc.3",
-    "config": "^3.3.3",
-    "date-fns": "^2.10.0",
-    "date-fns-tz": "^1.0.12",
     "discord.js": "^12.0.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"

@@ -3,7 +3,6 @@ import { isProduction } from "./utils";
 
 //  Activate Sentry in production
 if (isProduction()) {
-    console.log("Sentry init");
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
 

@@ -5,6 +5,8 @@
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=localhost vercel dev",
+    "predeploy-prod": "yarn build",
+    "deploy-prod": "cp .env dist",
     "lint": "eslint -c .eslintrc.json src/**"
   },
   "main": "index.js",

@@ -27,13 +27,15 @@ export class Reporter {
         this.token = token;
         this.channelId = channelId;
         this.client = new Client();
+        process.on("SIGINT", () => this.cleanup());
     }
 
     login() {
-        if (!this.token) {
-            throw new Error("No Access Token provided");
-        }
-        return new Promise<void>((resolve) => {
+        return new Promise<void>((resolve, reject) => {
+            if (!this.token) {
+                reject(new Error("No Access Token provided"));
+                return;
+            }
             this.client.once("ready", this.handleClicentReady(resolve));
             this.client.login(this.token);
         });

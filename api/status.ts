@@ -1,6 +1,13 @@
 import { NowRequest, NowResponse } from "@vercel/node";
+import * as Sentry from "@sentry/node";
+
 import { Reporter } from "../reporter";
 import { StatusData, StatusParser } from "../status-parser";
+
+/**
+ * Initialize Sentry and set error handler
+ */
+import "../sentry";
 
 const handler = async (req: NowRequest, res: NowResponse) =>{
     const { discord_token, boj_token, boj_group_code, discord_channel_id } = req.query;
@@ -20,6 +27,7 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
             },
         });
     } catch (err) {
+        Sentry.captureException(err);
         res.status(500).json({
             status: "error",
             error: err,

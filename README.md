@@ -108,11 +108,11 @@ HTTP 200 OK
 ```
 
 ```ts
-HTTP 500 Internal Server Error
+HTTP <ERROR CODE>
 
 {
-    "status": "error",
-    "error": "error reason",
+    "status": <ERROR NAME>,
+    "error": <ERROR MESSAGE>,
 }
 ```
 

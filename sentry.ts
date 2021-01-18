@@ -1,11 +1,8 @@
 import * as Sentry from "@sentry/node";
-import * as dotenv from "dotenv";
-
 import { isProduction } from "./utils";
 
 //  Activate Sentry in production
 if (isProduction()) {
-    dotenv.config();
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
 

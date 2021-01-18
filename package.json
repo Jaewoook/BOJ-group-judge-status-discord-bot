@@ -5,8 +5,6 @@
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=localhost vercel dev",
-    "predeploy-prod": "yarn build",
-    "deploy-prod": "cp .env dist",
     "lint": "eslint -c .eslintrc.json src/**"
   },
   "main": "index.js",
@@ -28,7 +26,6 @@
     "@sentry/node": "^5.30.0",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.0.1",
-    "dotenv": "^8.2.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
   }

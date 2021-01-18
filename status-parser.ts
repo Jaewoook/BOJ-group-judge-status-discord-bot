@@ -1,5 +1,13 @@
+/**
+ * External dependencies
+ */
 import cheerio from "cheerio";
 import request from "request-promise";
+import httpErrors from "http-errors";
+
+/**
+ * Internal dependencies
+ */
 import { log, isLocalhost } from "./utils";
 
 export interface StatusData {
@@ -33,7 +41,7 @@ export class StatusParser {
                 const $ = cheerio.load(response);
                 //  check session is valid
                 if ($(".page-header").length === 0 || $(".loginbar .username").length === 0) {
-                    reject("Invalid token");
+                    reject(httpErrors(401, "Invalid token"));
                     return;
                 }
 
@@ -66,7 +74,7 @@ export class StatusParser {
                         }
                     });
                     if (this.validate(data)) {
-                        reject("Status data validation failed");
+                        reject(httpErrors(500, "Status data validation failed"));
                         return;
                     }
                     result.push(data);
@@ -76,7 +84,7 @@ export class StatusParser {
                 }
 
                 if (this.hasProcessing(result)) {
-                    reject("Processing submit exists. Try next time.");
+                    reject(httpErrors(403, "Processing submit exists. Try next time."));
                 }
                 resolve(result);
             }).catch((err) => reject(err));

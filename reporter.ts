@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { Client, MessageEmbed, TextChannel } from "discord.js";
+import httpErrors from "http-errors";
 
 /**
  * Internal dependencies
@@ -33,7 +34,7 @@ export class Reporter {
     login() {
         return new Promise<void>((resolve, reject) => {
             if (!this.token) {
-                reject(new Error("No Access Token provided"));
+                reject(httpErrors(400, "No Access Token provided"));
                 return;
             }
             this.client.once("ready", this.handleClicentReady(resolve));

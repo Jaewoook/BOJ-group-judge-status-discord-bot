@@ -28,7 +28,7 @@ const handler = async (req: NowRequest, res: NowResponse) =>{
         });
     } catch (err) {
         Sentry.captureException(err);
-        res.status(500).json({
+        res.status(err.status || 500).json({
             status: err.name || "error",
             error: err.message,
         });

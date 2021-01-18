@@ -37,7 +37,7 @@ export class Reporter {
                 return;
             }
             this.client.once("ready", this.handleClicentReady(resolve));
-            this.client.login(this.token);
+            this.client.login(this.token).catch((err) => reject(err));
         });
     }
 

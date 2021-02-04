@@ -85,6 +85,7 @@ export class StatusParser {
 
                 if (this.hasProcessing(result)) {
                     reject(httpErrors(403, "Processing submit exists. Try next time."));
+                    return;
                 }
                 resolve(result);
             }).catch((err) => reject(err));

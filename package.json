@@ -21,7 +21,7 @@
     "@vercel/node": "^1.8.5",
     "eslint": "^6.8.0",
     "typescript": "^3.8.3",
-    "vercel": "^21.0.1"
+    "vercel": "^22.0.1"
   },
   "dependencies": {
     "@sentry/node": "^5.30.0",

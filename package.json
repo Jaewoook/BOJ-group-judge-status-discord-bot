@@ -18,7 +18,7 @@
     "@types/request-promise": "^4.1.45",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
-    "@vercel/node": "^1.8.5",
+    "@vercel/node": "^1.11.1",
     "eslint": "^6.8.0",
     "typescript": "^3.8.3",
     "vercel": "^21.0.1"
